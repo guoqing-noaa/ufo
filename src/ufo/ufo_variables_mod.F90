@@ -13,7 +13,7 @@ public :: ufo_vars_read, ufo_vars_getindex
 
 integer, parameter, public :: n_aerosols_gocart_default=14,&
      &n_aerosols_gocart_gefs=15,n_aerosols_gocart_ufs=18,&
-     &n_aerosols_gocart_geos=18 !soon 21 for geos
+     &n_aerosols_gocart_geos=18,n_aerosols_gocart_rrfs=3 !soon 21 for geos
 
 integer, parameter, public :: MAXVARLEN=110
 character(len=MAXVARLEN), public, parameter :: var_tv   = "virtual_temperature"
@@ -185,6 +185,10 @@ character(len=MAXVARLEN), public, parameter :: var_no3an1 = "mass_fraction_of_ni
 character(len=MAXVARLEN), public, parameter :: var_no3an2 = "mass_fraction_of_nitrate002_in_air"
 character(len=MAXVARLEN), public, parameter :: var_no3an3 = "mass_fraction_of_nitrate003_in_air"
 
+character(len=MAXVARLEN), public, parameter :: var_rrfs_dust = "mixing_ratio_of_dust_wrt_dry_air"
+character(len=MAXVARLEN), public, parameter :: var_rrfs_coarsepm = "mixing_ratio_of_coarsepm_wrt_dry_air"
+character(len=MAXVARLEN), public, parameter :: var_rrfs_smoke = "mixing_ratio_of_smoke_wrt_dry_air"
+
 ! Values for AODExt
 character(len=MAXVARLEN), public, parameter :: var_ext1 = "volume_extinction_in_air_due_to_aerosol_particles_lambda1"
 character(len=MAXVARLEN), public, parameter :: var_ext2 = "volume_extinction_in_air_due_to_aerosol_particles_lambda2"
@@ -225,6 +229,9 @@ character(len=maxvarlen), dimension(n_aerosols_gocart_geos), public, parameter :
      &var_du001, var_du002, var_du003, var_du004, var_du005,&
      &var_ss001, var_ss002, var_ss003, var_ss004, var_ss005,&
      &var_no3an1, var_no3an2, var_no3an3]
+
+character(len=maxvarlen), dimension(n_aerosols_gocart_rrfs), public, parameter :: &
+     &var_aerosols_gocart_rrfs = [var_rrfs_smoke, var_rrfs_dust, var_rrfs_coarsepm]
 
 !TODo: need naming convention
 ! variables for space weather ionosphere/thermosphere

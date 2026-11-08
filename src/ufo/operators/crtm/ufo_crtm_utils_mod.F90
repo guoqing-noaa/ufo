@@ -1746,6 +1746,9 @@ end function uv_to_wdir
     ELSE IF (aerosol_option == "aerosols_gocart_geos") THEN
        ALLOCATE(var_aerosols(n_aerosols_gocart_geos))
        var_aerosols=var_aerosols_gocart_geos
+     ELSE IF (aerosol_option == "aerosols_gocart_rrfs") THEN
+       ALLOCATE(var_aerosols(n_aerosols_gocart_rrfs))
+       var_aerosols=var_aerosols_gocart_rrfs
     ELSE
        WRITE(err_msg,*) "assign_aerosol_names: aerosol_option not implemented"&
        &//TRIM(aerosol_option)
@@ -1831,12 +1834,12 @@ end function uv_to_wdir
             CASE (var_bcphilic)
                atm(m)%aerosol(i)%TYPE  = 7
 
-            CASE (var_ocphobic)
+            CASE (var_ocphobic, var_rrfs_smoke)
                atm(m)%aerosol(i)%TYPE  = 6
             CASE (var_ocphilic)
                atm(m)%aerosol(i)%TYPE  = 6
 
-            CASE (var_du001)
+            CASE (var_du001, var_rrfs_dust)
                atm(m)%aerosol(i)%TYPE  = 1
                atm(m)%aerosol(i)%effective_radius(:)=dust_radii(1)
             CASE (var_du002)
@@ -1848,7 +1851,7 @@ end function uv_to_wdir
             CASE (var_du004)
                atm(m)%aerosol(i)%TYPE  = 1
                atm(m)%aerosol(i)%effective_radius(:)=dust_radii(4)
-            CASE (var_du005)
+            CASE (var_du005, var_rrfs_coarsepm)
                atm(m)%aerosol(i)%TYPE  = 1
                atm(m)%aerosol(i)%effective_radius(:)=dust_radii(5)
 
@@ -1880,7 +1883,7 @@ end function uv_to_wdir
                    &%TYPE, rh(k,m))
                END DO
 
-            CASE (var_bcphobic, var_ocphobic)
+            CASE (var_bcphobic, var_ocphobic, var_rrfs_smoke)
                atm(m)%aerosol(i)%effective_radius(:)= AeroC&
                 &%Reff(1,atm(m)%aerosol(i)%TYPE)
 
@@ -1911,7 +1914,7 @@ end function uv_to_wdir
             SELECT CASE (TRIM(varname))
 
             ! Dust
-            CASE (var_du001)
+            CASE (var_du001, var_rrfs_dust)
                atm(m)%aerosol(i)%TYPE  = 1 ! dust bin 1
             CASE (var_du002)
                atm(m)%aerosol(i)%TYPE  = 2 ! dust bin 2
@@ -1919,7 +1922,7 @@ end function uv_to_wdir
                atm(m)%aerosol(i)%TYPE  = 3 ! dust bin 3
             CASE (var_du004)
                atm(m)%aerosol(i)%TYPE  = 4 ! dust bin 4
-            CASE (var_du005)
+            CASE (var_du005, var_rrfs_coarsepm)
                atm(m)%aerosol(i)%TYPE  = 5 ! dust bin 5
 
             ! Sea salt
@@ -1935,7 +1938,7 @@ end function uv_to_wdir
                atm(m)%aerosol(i)%TYPE  = 10 ! sea salt bin 5
 
             ! Organic carbon
-            CASE (var_ocphobic)
+            CASE (var_ocphobic, var_rrfs_smoke)
                atm(m)%aerosol(i)%TYPE  = 11 ! hydrophobic
             CASE (var_ocphilic)
                atm(m)%aerosol(i)%TYPE  = 12 ! hydrophilic
@@ -1994,7 +1997,7 @@ end function uv_to_wdir
             SELECT CASE (TRIM(varname))
 
               !Dust
-              CASE (var_du001)
+              CASE (var_du001, var_rrfs_dust)
                  atm(m)%aerosol(i)%TYPE = 1
               CASE (var_du002)
                  atm(m)%aerosol(i)%TYPE = 1
@@ -2002,7 +2005,7 @@ end function uv_to_wdir
                  atm(m)%aerosol(i)%TYPE = 1
               CASE (var_du004)
                  atm(m)%aerosol(i)%TYPE = 1
-              CASE (var_du005)
+              CASE (var_du005, var_rrfs_coarsepm)
                  atm(m)%aerosol(i)%TYPE = 1
 
               !Sea Salt
@@ -2018,7 +2021,7 @@ end function uv_to_wdir
                  atm(m)%aerosol(i)%TYPE = 5
 
               ! Organic carbon
-              CASE (var_ocphobic)
+              CASE (var_ocphobic, var_rrfs_smoke)
                  atm(m)%aerosol(i)%TYPE = 7
               CASE (var_ocphilic)
                  atm(m)%aerosol(i)%TYPE = 3
@@ -2069,7 +2072,8 @@ end function uv_to_wdir
                END DO
             ! Reff for hydrophobic aerosols
             CASE (var_du001, var_du002, var_du003, var_du004, var_du005,&
-                  &var_bcphobic, var_ocphobic)
+                  &var_bcphobic, var_ocphobic, var_rrfs_dust, var_rrfs_coarsepm,&
+                  &var_rrfs_smoke)
                atm(m)%aerosol(i)%effective_radius(:)= AeroC&
                 &%Reff(1,atm(m)%aerosol(i)%TYPE)
 
@@ -2090,7 +2094,7 @@ end function uv_to_wdir
             SELECT CASE (TRIM(varname))
 
             !Dust
-            CASE (var_du001)
+            CASE (var_du001, var_rrfs_dust)
                atm(m)%aerosol(i)%TYPE = 1
             CASE (var_du002)
                atm(m)%aerosol(i)%TYPE = 1
@@ -2098,7 +2102,7 @@ end function uv_to_wdir
                atm(m)%aerosol(i)%TYPE = 1
             CASE (var_du004)
                atm(m)%aerosol(i)%TYPE = 1
-            CASE (var_du005)
+            CASE (var_du005, var_rrfs_coarsepm)
                atm(m)%aerosol(i)%TYPE = 1
 
             !Sea Salt
@@ -2114,7 +2118,7 @@ end function uv_to_wdir
               atm(m)%aerosol(i)%TYPE  = 3
 
             ! Organic carbon
-            CASE (var_ocphobic)
+            CASE (var_ocphobic, var_rrfs_smoke)
                atm(m)%aerosol(i)%TYPE = 2
             CASE (var_ocphilic)
                atm(m)%aerosol(i)%TYPE = 2
